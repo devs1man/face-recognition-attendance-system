@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes.health import router
 from app.routes.student import router as student_router
+from app.database.database import Base
 
 app = FastAPI(
     title="Face recognition Attendance System API",
