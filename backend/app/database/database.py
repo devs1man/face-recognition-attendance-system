@@ -4,6 +4,13 @@ from sqlalchemy.orm import declarative_base
 from dotenv import load_dotenv
 import os
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -16,5 +23,6 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
+
 import app.models
 Base.metadata.create_all(bind=engine)
