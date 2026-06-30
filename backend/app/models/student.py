@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.database.database import Base
 
 class Student(Base):
@@ -10,3 +11,9 @@ class Student(Base):
     department = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
     email = Column(String, unique=True, nullable=False)
+
+    attendance_records = relationship(
+        "Attendance",
+        back_populates="student",
+        cascade="all,delete"
+    )
