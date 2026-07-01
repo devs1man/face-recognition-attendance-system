@@ -17,3 +17,9 @@ class Student(Base):
         back_populates="student",
         cascade="all,delete"
     )
+
+    face_embeddings = relationship(
+        "FaceEmbedding",
+        back_populates="student",
+        cascade="all, delete"
+    )
