@@ -1,9 +1,7 @@
 import cv2
 from insightface.app import FaceAnalysis
 
-app = FaceAnalysis(
-    name="buffalo_l"
-)
+app = FaceAnalysis(name="buffalo_l")
 
 app.prepare(
     ctx_id=-1,
@@ -11,20 +9,53 @@ app.prepare(
 )
 
 cap = cv2.VideoCapture(0)
+
 if not cap.isOpened():
     raise Exception("Could not open camera")
 
+
+def draw_faces(frame, faces):
+
+    for face in faces:
+
+        bbox = face.bbox.astype(int)
+
+        cv2.rectangle(
+            frame,
+            (bbox[0], bbox[1]),
+            (bbox[2], bbox[3]),
+            (0, 255, 0),
+            2
+        )
+
+        confidence = face.det_score
+
+        cv2.putText(
+            frame,
+            f"{confidence:.2f}",
+            (bbox[0], bbox[1]-10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (0, 255, 0),
+            2)
+
+
 while True:
+
     ret, frame = cap.read()
 
     if not ret:
         break
 
-    cv2.imshow("Webcam", frame)
-    
-    key = cv2.waitKey(1)
+    faces = app.get(frame)
 
-    if key == ord("q"):
+    draw_faces(frame, faces)
+
+    cv2.imshow("Face Detector", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
+
+
 cap.release()
 cv2.destroyAllWindows()
