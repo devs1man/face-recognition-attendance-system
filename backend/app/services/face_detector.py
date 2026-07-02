@@ -24,10 +24,21 @@ def draw_faces(frame, faces):
             frame,
             (bbox[0], bbox[1]),
             (bbox[2], bbox[3]),
-            (0, 255, 0),
+            (255,0, 0),
             2
         )
 
+        for point in face.landmark_2d_106:
+            x = int(point[0])
+            y = int(point[1])
+
+            cv2.circle(
+                frame,
+                (x,y),
+                1,
+                (0,255,0),
+                -1
+            )
         confidence = face.det_score
 
         cv2.putText(
@@ -36,7 +47,7 @@ def draw_faces(frame, faces):
             (bbox[0], bbox[1]-10),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.6,
-            (0, 255, 0),
+            (255,0, 0),
             2)
 
 
