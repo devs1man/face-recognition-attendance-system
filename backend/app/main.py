@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes.health import router
 from app.routes.student import router as student_router
+from app.routes.face import router as face_router
 from app.database.database import Base
 
 app = FastAPI(
@@ -17,3 +18,4 @@ def root():
 
 app.include_router(router)
 app.include_router(student_router)
+app.include_router(face_router)
