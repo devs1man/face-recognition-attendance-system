@@ -2,10 +2,9 @@ import cv2
 from sqlalchemy.orm import Session
 
 from app.models.student import Student
-from app.models.face_embedding import FaceEmbedding
-from app.services.face_detector import FaceDetector
+from app.services.ai_manager import face_detector
 
-def capture_frames(face_analyzer):
+def capture_frames():
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
@@ -18,7 +17,8 @@ def capture_frames(face_analyzer):
         if not ret:
             break
 
-        faces = detector.detect_faces(frame)
+        faces = face_detector.detect_faces(frame)
+
         if len(faces)!=1:
 
             cv2.putText(
@@ -37,7 +37,7 @@ def capture_frames(face_analyzer):
                 break
             continue
 
-        good_frames.append(frame)
+        good_frames.append(frame.copy())
 
         cv2.putText(
             frame,
@@ -53,13 +53,13 @@ def capture_frames(face_analyzer):
         if cv2.waitKey(1) & 0xff == ord("q"):
             break
 
-        cap.release()
-        cv2.destroyAllWindows()
-        return good_frames
+    cap.release()
+    cv2.destroyAllWindows()
+    return good_frames
 
 def register_face(
         student_id :int,
-        db
+        db:Session,
 ):
     student = (
         db.query(Student)
@@ -72,7 +72,7 @@ def register_face(
             "success":False,
             "message":"Student not found"
         }
-    good_frames = capture_frames(face_analyzer)
+    good_frames = capture_frames()
 
     return{
         "success":True,
