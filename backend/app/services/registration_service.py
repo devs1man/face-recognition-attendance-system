@@ -3,6 +3,10 @@ from sqlalchemy.orm import Session
 
 from app.models.student import Student
 from app.services.ai_manager import face_detector
+from app.services.face_embedder import FaceEmbedder
+from app.models.face_embedding import FaceEmbedding
+
+embedder = FaceEmbedder()
 
 def capture_frames():
     cap = cv2.VideoCapture(0)
@@ -57,6 +61,23 @@ def capture_frames():
     cv2.destroyAllWindows()
     return good_frames
 
+def save_embeddings(
+        student: Student,
+        embeddings,
+        db:Session
+):
+    for embedding in embeddings:
+        face_embedding = FaceEmbedding(
+            student_id = student.id,
+            embedding = embedding.tolist(),
+            model_name = "buffalo_l",
+            embedding_dimension = len(embedding)
+        )
+        db.add(face_embedding)
+
+    db.commit()
+
+    
 def register_face(
         student_id :int,
         db:Session,
@@ -74,9 +95,18 @@ def register_face(
         }
     good_frames = capture_frames()
 
+    embeddings = []
+
+    for frame in good_frames:
+        embedding = embedder.get_embedding(frame)
+
+        if embedding is not None:
+            embeddings.append(embedding)
+
     return{
         "success":True,
         "student":student.name,
         "frames_captured" : len(good_frames),
+        "embeddings_generated":len(embeddings),
         "message":"Frame capture completed successfully"
     }
