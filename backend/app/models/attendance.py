@@ -5,6 +5,12 @@ from app.database.database import Base
 class Attendance(Base):
     __tablename__ = "attendance"
 
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+    
     student_id = Column(
         Integer,
         ForeignKey("students.id", ondelete="CASCADE"),

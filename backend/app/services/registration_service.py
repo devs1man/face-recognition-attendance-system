@@ -77,7 +77,7 @@ def save_embeddings(
 
     db.commit()
 
-    
+
 def register_face(
         student_id :int,
         db:Session,
@@ -102,6 +102,12 @@ def register_face(
 
         if embedding is not None:
             embeddings.append(embedding)
+
+    save_embeddings(
+        student,
+        embeddings,
+        db
+    )
 
     return{
         "success":True,
