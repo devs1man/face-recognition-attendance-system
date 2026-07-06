@@ -22,7 +22,10 @@ def recognize_frame(
             db
         )
 
-        if match is None:
-            recognized_students.append(match)
+        if match is not None:
+            match["bbox"] = face.bbox.astype(int).tolist()
+            recognized_students[
+                match["student_id"]
+            ] = match
 
-    return recognized_students
+    return list(recognized_students.values())
