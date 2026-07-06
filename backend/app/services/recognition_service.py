@@ -11,16 +11,19 @@ def recognize_frame(
         db:Session
 ):
     faces = face_detector.detect_faces(frame)
+    print(f"faces detected: {len(faces)}")
 
-    recognized_students = []
+    recognized_students = {}
 
     for face in faces:
         embedding = face.embedding
 
+        print("matching...")
         match = match_face(
             embedding,
             db
         )
+        print(match)
 
         if match is not None:
             match["bbox"] = face.bbox.astype(int).tolist()

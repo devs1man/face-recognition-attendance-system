@@ -29,13 +29,14 @@ def match_face(
 
     best_similarity = -1
     best_match = None
-    THRESHOLD = 0.8
+    THRESHOLD = 0.6
 
     for stored in stored_embeddings:
         similarity = cosine_similarity(
             embedding,
             stored.embedding
         )
+        print(f"Student: {stored.student.name}, Similarity: {similarity:.4f}")
         if similarity > best_similarity:
             best_similarity = similarity
             best_match = stored
@@ -46,6 +47,7 @@ def match_face(
     return{
          "student_id":best_match.student.id,
          "student_name":best_match.student.name,
-         "similarity":best_similarity
+         "embedding_id":best_match.id,
+         "similarity":float(best_similarity)
     }
 
