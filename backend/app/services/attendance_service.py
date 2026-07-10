@@ -37,4 +37,5 @@ def mark_attendance(
         "success": True,
         "attendance_id":attendance.id,
         "student_id":student_id,
+        "message" : "Attendance marked"
     }

@@ -13,9 +13,9 @@ class Student(Base):
     email = Column(String, unique=True, nullable=False)
 
     attendance_records = relationship(
-        "Attendance",
+        "AttendanceRecord",
         back_populates="student",
-        cascade="all,delete"
+        cascade="all,delete-orphan"
     )
 
     face_embeddings = relationship(

@@ -29,7 +29,7 @@ def match_face(
 
     best_similarity = -1
     best_match = None
-    THRESHOLD = 0.6
+    THRESHOLD = 0.65
 
     for stored in stored_embeddings:
         similarity = cosine_similarity(
