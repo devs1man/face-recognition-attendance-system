@@ -3,6 +3,8 @@ from app.routes.health import router
 from app.routes.student import router as student_router
 from app.routes.face import router as face_router
 from app.database.database import Base
+from app.routes.session import router as session_router
+from app.routes.attendance import router as attendance_router
 
 app = FastAPI(
     title="Face recognition Attendance System API",
@@ -19,3 +21,5 @@ def root():
 app.include_router(router)
 app.include_router(student_router)
 app.include_router(face_router)
+app.include_router(session_router)
+app.include_router(attendance_router)

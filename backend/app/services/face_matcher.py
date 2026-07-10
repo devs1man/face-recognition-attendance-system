@@ -36,7 +36,6 @@ def match_face(
             embedding,
             stored.embedding
         )
-        print(f"Student: {stored.student.name}, Similarity: {similarity:.4f}")
         if similarity > best_similarity:
             best_similarity = similarity
             best_match = stored
