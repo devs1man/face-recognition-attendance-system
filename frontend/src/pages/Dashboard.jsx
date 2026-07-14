@@ -1,7 +1,22 @@
+import { useEffect } from "react";
+import { getStudents } from "../api/studentApi";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 import Card from "../components/Card";
 
 function Dashboard() {
+  useEffect(() => {
+    async function loadStudents() {
+      try {
+        const students = await getStudents();
+        console.log(students);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadStudents();
+  }, []);
+
   return (
     <DashboardLayout>
       <h1 className="text-4xl font-bold">Dashboard</h1>

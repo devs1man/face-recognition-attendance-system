@@ -26,6 +26,12 @@ def create_student(
 
     return db_student
 
+@router.get("/students")
+def get_all_students(
+    db:Session = Depends(get_db)
+):
+    students = db.query(Student).all()
+    return students
 
 @router.get("/students/{student_id}")
 def get_students(
