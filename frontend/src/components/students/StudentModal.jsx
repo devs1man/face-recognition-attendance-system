@@ -1,4 +1,4 @@
-function StudentModal({ isOpen, title, children, onCLose }) {
+function StudentModal({ isOpen, title, children, onClose }) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

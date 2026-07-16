@@ -1,4 +1,20 @@
+import { useState } from "react";
+
 function StudentForm() {
+  const [formData, setFormData] = useState({
+    roll_number: "",
+    name: "",
+    department: "",
+    year: "",
+    email: "",
+  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <form className="space-y-4">
       <input
@@ -9,6 +25,9 @@ function StudentForm() {
 
       <input
         type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
         placeholder="Name"
         className="w-full border rounded-lg p-3"
       />
