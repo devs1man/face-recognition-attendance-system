@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function StudentForm() {
+function StudentForm({ onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
     roll_number: "",
     name: "",
@@ -15,11 +15,20 @@ function StudentForm() {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    await onSubmit(formData);
+  };
+
   return (
-    <form className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
         type="text"
-        placeholder="Roll Number"
+        name="roll_number"
+        value={formData.roll_number}
+        onChange={handleChange}
+        placeholder="roll number"
         className="w-full border rounded-lg p-3"
       />
 
@@ -28,30 +37,43 @@ function StudentForm() {
         name="name"
         value={formData.name}
         onChange={handleChange}
-        placeholder="Name"
+        placeholder="name"
         className="w-full border rounded-lg p-3"
       />
 
       <input
         type="text"
-        placeholder="Department"
+        name="department"
+        value={formData.department}
+        onChange={handleChange}
+        placeholder="deaprtment"
         className="w-full border rounded-lg p-3"
       />
 
       <input
         type="number"
-        placeholder="Year"
+        name="year"
+        value={formData.year}
+        onChange={handleChange}
+        placeholder="year"
         className="w-full border rounded-lg p-3"
       />
 
       <input
         type="email"
-        placeholder="Email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="email"
         className="w-full border rounded-lg p-3"
       />
 
       <div className="flex justify-end gap-3">
-        <button type="button" className="px-5 py-2 border rounded-lg">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-5 py-2 border rounded-lg"
+        >
           Cancel
         </button>
 

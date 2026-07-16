@@ -4,21 +4,31 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import StudentTable from "../components/students/StudentTable";
 import StudentModal from "../components/students/StudentModal";
 import StudentForm from "../components/students/StudentForm";
-import { getStudents } from "../api/studentApi";
+import { getStudents, createStudent } from "../api/studentApi";
 
 function Students() {
   const [students, setStudents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const loadStudent = async () => {
+    try {
+      const data = await getStudents();
+      setStudents(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCreateStudent = async (studentData) => {
+    try {
+      await createStudent(studentData);
+      setIsModalOpen(false);
+      await loadStudent();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    async function loadStudent() {
-      try {
-        const data = await getStudents();
-        setStudents(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
     loadStudent();
   }, []);
   return (
@@ -40,7 +50,10 @@ function Students() {
         title="Add Student"
         onCLose={() => setIsModalOpen(false)}
       >
-        <StudentForm />
+        <StudentForm
+          onSubmit={handleCreateStudent}
+          onCancel={() => setIsModalOpen(false)}
+        />
       </StudentModal>
     </DashboardLayout>
   );
