@@ -3,7 +3,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import { getStudents } from "../api/studentApi";
 
 function Students() {
-  const [students, setStudents] = useEffect([]);
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
     async function loadStudents() {
@@ -33,7 +33,7 @@ function Students() {
             </tr>
           </thead>
           <tbody>
-            {students.map((students) => (
+            {students.map((student) => (
               <tr key={student.id} className="border-b hover:bg-gray-100">
                 <td className="p-3">{student.roll_number}</td>
 
