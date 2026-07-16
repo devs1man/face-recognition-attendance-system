@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+
 import DashboardLayout from "../layouts/DashboardLayout";
+import StudentTable from "../components/students/StudentTable";
+
 import { getStudents } from "../api/studentApi";
 
 function Students() {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    async function loadStudents() {
+    async function loadStudent() {
       try {
         const data = await getStudents();
         setStudents(data);
@@ -14,53 +17,19 @@ function Students() {
         console.error(error);
       }
     }
-    loadStudents();
+    loadStudent();
   }, []);
-
   return (
     <DashboardLayout>
-      <h1 className="text-3xl font-bold mb-8">Students</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Students</h1>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3">Roll Number</th>
-              <th className="text-left p-3">Name</th>
-              <th className="text-left p-3">Department</th>
-              <th className="text-left p-3">Year</th>
-              <th className="text-left p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id} className="border-b hover:bg-gray-100">
-                <td className="p-3">{student.roll_number}</td>
-
-                <td className="p-3">{student.name}</td>
-
-                <td className="p-3">{student.department}</td>
-
-                <td className="p-3">{student.year}</td>
-
-                <td className="p-3 flex gap-2">
-                  <button className="bg-blue-500 text-white px-3 py-1 rounded">
-                    Edit
-                  </button>
-
-                  <button className="bg-red-500 text-white px-3 py-1 rounded">
-                    Delete
-                  </button>
-
-                  <button className="bg-green-500 text-white px-3 py-1 rounded">
-                    Register Face
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <button className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+          + Add Student
+        </button>
       </div>
+
+      <StudentTable students={students} />
     </DashboardLayout>
   );
 }
