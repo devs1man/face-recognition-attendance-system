@@ -4,7 +4,12 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import StudentTable from "../components/students/StudentTable";
 import StudentModal from "../components/students/StudentModal";
 import StudentForm from "../components/students/StudentForm";
-import { getStudents, createStudent, updateStudent } from "../api/studentApi";
+import {
+  getStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} from "../api/studentApi";
 
 function Students() {
   const [students, setStudents] = useState([]);

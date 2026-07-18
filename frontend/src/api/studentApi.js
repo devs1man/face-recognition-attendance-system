@@ -14,3 +14,8 @@ export const updateStudent = async (studentId, studentData) => {
   const response = await api.put(`/students/${studentId}`, studentData);
   return response.data;
 };
+
+export const deleteStudent = async (studentId) => {
+  const response = await api.delete(`/students/${studentId}`);
+  return response.data;
+};
