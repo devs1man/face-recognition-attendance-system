@@ -9,3 +9,8 @@ export const createStudent = async (studentData) => {
   const response = await api.post("/students", studentData);
   return response.data;
 };
+
+export const getStudents = async (studentId, studentData) => {
+  const response = await api.put(`/students/${studentId}`, studentData);
+  return response.data;
+};

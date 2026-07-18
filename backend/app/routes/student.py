@@ -12,7 +12,7 @@ def create_student(
     student: StudentCreate,
     db: Session=Depends(get_db)
 ):
-    db_student = Student(
+    student = Student(
         roll_number=student.roll_number,
         name=student.name,
         department=student.department,
@@ -20,11 +20,11 @@ def create_student(
         email=student.email
     )
     
-    db.add(db_student)
+    db.add(student)
     db.commit()
-    db.refresh(db_student)
+    db.refresh(student)
 
-    return db_student
+    return student
 
 @router.get("/students")
 def get_all_students(
@@ -53,43 +53,43 @@ def get_students(
 @router.put("/students/{student_id}")
 def update_student(
     student_id: int,
-    student:StudentCreate,
+    student_data:StudentCreate,
     db: Session=Depends(get_db)
 ):
-    db_student = db.query(Student).filter(
+    student = db.query(Student).filter(
         Student.id == student_id
     ).first()
 
-    if db_student is None:
+    if student is None:
         raise HTTPException(
             status_code=404,
             detail="Student not found"
         )
-    db_student.roll_number = student.roll_number
-    db_student.name = student.name
-    db_student.department = student.department
-    db_student.year = student.year
-    db_student.email = student.email
+    student.roll_number = student_data.roll_number
+    student.name = student_data.name
+    student.department = student_data.department
+    student.year = student_data.year
+    student.email = student_data.email
 
     db.commit()
-    db.refresh(db_student)
-    return db_student
+    db.refresh(student)
+    return student
 
 @router.delete("/students/{student_id}")
 def delete_student(
     student_id: int,
     db: Session=Depends(get_db)
 ):
-    db_student = db.query(Student).filter(
+    student = db.query(Student).filter(
         Student.id == student_id
     ).first()
 
-    if db_student is None:
+    if student is None:
         raise HTTPException(
             status_code=404,
             detail="Student not found"
         )
-    db.delete(db_student)
+    db.delete(student)
     db.commit()
 
     return{
