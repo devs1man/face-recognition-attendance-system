@@ -1,13 +1,15 @@
 import { useState } from "react";
 
-function StudentForm({ onSubmit, onCancel }) {
-  const [formData, setFormData] = useState({
-    roll_number: "",
-    name: "",
-    department: "",
-    year: "",
-    email: "",
-  });
+function StudentForm({ initialData, onSubmit, onCancel }) {
+  const [formData, setFormData] = useState(
+    initialData || {
+      roll_number: "",
+      name: "",
+      department: "",
+      year: "",
+      email: "",
+    },
+  );
   const handleChange = (e) => {
     setFormData({
       ...formData,
