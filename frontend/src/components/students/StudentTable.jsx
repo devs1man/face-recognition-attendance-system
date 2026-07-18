@@ -1,4 +1,4 @@
-function StudentTable({ students }) {
+function StudentTable({ students, onEdit }) {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <table className="w-full">
@@ -28,7 +28,10 @@ function StudentTable({ students }) {
               <td className="p-3">{student.year}</td>
 
               <td className="p-3 flex gap-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded">
+                <button
+                  onClick={() => onEdit(student)}
+                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                >
                   Edit
                 </button>
 

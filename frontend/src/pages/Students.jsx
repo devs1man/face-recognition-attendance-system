@@ -4,11 +4,12 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import StudentTable from "../components/students/StudentTable";
 import StudentModal from "../components/students/StudentModal";
 import StudentForm from "../components/students/StudentForm";
-import { getStudents, createStudent } from "../api/studentApi";
+import { getStudents, createStudent, updateStudent } from "../api/studentApi";
 
 function Students() {
   const [students, setStudents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const loadStudent = async () => {
     try {
       const data = await getStudents();
@@ -18,14 +19,20 @@ function Students() {
     }
   };
 
-  const handleCreateStudent = async (studentData) => {
-    try {
-      await createStudent(studentData);
-      setIsModalOpen(false);
-      await loadStudent();
-    } catch (error) {
-      console.error(error);
+  const handleSaveStudent = async (formData) => {
+    if (selectedStudent) {
+      await updateStudent(selectedStudent.id, formData);
+    } else {
+      await createStudent(formData);
     }
+    await loadStudent();
+    setIsModalOpen(false);
+    setSelectedStudent(null);
+  };
+
+  const handleEdit = (student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -44,15 +51,22 @@ function Students() {
         </button>
       </div>
 
-      <StudentTable students={students} />
+      <StudentTable onEdit={handleEdit} students={students} />
       <StudentModal
         isOpen={isModalOpen}
-        title="Add Student"
-        onCLose={() => setIsModalOpen(false)}
+        title={selectedStudent ? "Edit Student" : "Add Student"}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedStudent(null);
+        }}
       >
         <StudentForm
-          onSubmit={handleCreateStudent}
-          onCancel={() => setIsModalOpen(false)}
+          initialData={selectedStudent}
+          onSubmit={handleSaveStudent}
+          onCancel={() => {
+            setIsModalOpen(false);
+            setSelectedStudent(null);
+          }}
         />
       </StudentModal>
     </DashboardLayout>
