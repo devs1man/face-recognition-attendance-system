@@ -10,11 +10,15 @@ import {
   updateStudent,
   deleteStudent,
 } from "../api/studentApi";
+import DeleteStudentModal from "../components/students/DeleteStudentModal";
 
 function Students() {
   const [students, setStudents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
+
   const loadStudent = async () => {
     try {
       const data = await getStudents();
@@ -24,6 +28,21 @@ function Students() {
     }
   };
 
+  const handleDeleteClick = (student) => {
+    setStudentToDelete(student);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteStudent = async () => {
+    try {
+      await deleteStudent(studentToDelete.id);
+      await loadStudent();
+      setDeleteModalOpen(false);
+      setStudentToDelete(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleSaveStudent = async (formData) => {
     if (selectedStudent) {
       await updateStudent(selectedStudent.id, formData);
@@ -56,7 +75,11 @@ function Students() {
         </button>
       </div>
 
-      <StudentTable onEdit={handleEdit} students={students} />
+      <StudentTable
+        onEdit={handleEdit}
+        students={students}
+        onDelete={handleDeleteClick}
+      />
       <StudentModal
         isOpen={isModalOpen}
         title={selectedStudent ? "Edit Student" : "Add Student"}
@@ -74,6 +97,15 @@ function Students() {
           }}
         />
       </StudentModal>
+      <DeleteStudentModal
+        isOpen={deleteModalOpen}
+        student={studentToDelete}
+        onCancel={() => {
+          setDeleteModalOpen(false);
+          setStudentToDelete(null);
+        }}
+        onConfirm={handleDeleteStudent}
+      />
     </DashboardLayout>
   );
 }

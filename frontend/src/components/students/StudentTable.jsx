@@ -1,4 +1,4 @@
-function StudentTable({ students, onEdit }) {
+function StudentTable({ students, onEdit, onDelete }) {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <table className="w-full">
@@ -35,7 +35,10 @@ function StudentTable({ students, onEdit }) {
                   Edit
                 </button>
 
-                <button className="bg-red-500 text-white px-3 py-1 rounded">
+                <button
+                  className="bg-red-500 text-white px-3 py-1 rounded"
+                  onClick={() => onDelete(student)}
+                >
                   Delete
                 </button>
 
