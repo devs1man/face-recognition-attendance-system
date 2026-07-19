@@ -1,16 +1,30 @@
+import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { startSession } from "mongoose";
+import { endSession } from "../api/attendanceApi";
 
 function Attendance() {
-  return (
-    <DashboardLayout>
-      <h1 className="text-4xl font-bold">Attendance</h1>
-      <div className="bg-white rounded-xl shadow p-8">
-        <button className="bg-green-600 text-white px-6 py-3 rounded-lg">
-          Start Attendance Session
-        </button>
-      </div>
-    </DashboardLayout>
-  );
+  const [session, setSession] = useState(null);
+
+  const handleStartSession = async () => {
+    try {
+      const data = await startSession();
+      setSession(data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to start session");
+    }
+  };
+
+  const handleEndSession = async () => {
+    try {
+      await endSession(session.session_id);
+      setSession(null);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to end session");
+    }
+  };
 }
 
 export default Attendance;
