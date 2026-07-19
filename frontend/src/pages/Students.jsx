@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import StudentTable from "../components/students/StudentTable";
@@ -18,6 +19,7 @@ function Students() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState(null);
+  const navigate = useNavigate();
 
   const loadStudent = async () => {
     try {
@@ -54,6 +56,14 @@ function Students() {
     setSelectedStudent(null);
   };
 
+  const handleRegisterFace = (student) => {
+    navigate("/register-face", {
+      state: {
+        student,
+      },
+    });
+  };
+
   const handleEdit = (student) => {
     setSelectedStudent(student);
     setIsModalOpen(true);
@@ -79,6 +89,7 @@ function Students() {
         onEdit={handleEdit}
         students={students}
         onDelete={handleDeleteClick}
+        onRegisterFace={handleRegisterFace}
       />
       <StudentModal
         isOpen={isModalOpen}

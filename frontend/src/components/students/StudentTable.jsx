@@ -1,4 +1,4 @@
-function StudentTable({ students, onEdit, onDelete }) {
+function StudentTable({ students, onEdit, onDelete, onRegisterFace }) {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <table className="w-full">
@@ -42,7 +42,10 @@ function StudentTable({ students, onEdit, onDelete }) {
                   Delete
                 </button>
 
-                <button className="bg-green-500 text-white px-3 py-1 rounded">
+                <button
+                  onClick={() => onRegisterFace(student)}
+                  className="bg-green-500 text-white px-3 py-1 rounded"
+                >
                   Register Face
                 </button>
               </td>
