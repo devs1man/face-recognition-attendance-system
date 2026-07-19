@@ -1,10 +1,22 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import { useLocation, useNavigate } from "react-router-dom";
+import { registerFace } from "../api/fastApi";
 
 function RegisterFace() {
   const location = useLocation();
   const navigate = useNavigate();
   const student = location.state?.student;
+  console.log(location.state);
+  console.log(student);
+  const handleRegisterFace = async () => {
+    try {
+      const response = await registerFace(student.id);
+      alert(response.message || "Face registered successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Face recognition failed");
+    }
+  };
 
   if (!student) {
     return (
@@ -23,6 +35,12 @@ function RegisterFace() {
             className="bg-blue-600 text-white px-5 py-2 rounded-lg"
           >
             Back to Students
+          </button>
+          <button
+            onClick={handleRegisterFace}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+          >
+            Start Registration
           </button>
         </div>
       </DashboardLayout>

@@ -1,13 +1,11 @@
 import api from "./axios";
 
-export const recognizeFace = async (imageFile) => {
-  const formData = new FormData();
+export const startSession = async () => {
+  const response = await api.post("/attendance/session/start");
+  return response.data;
+};
 
-  formData.append("file", imageFile);
-  const response = await api.post("/recognition/recognize", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const endSession = async (sessionId) => {
+  const reposnse = await api.post(`/attendance/session/${sessionId}/end`);
   return response.data;
 };
