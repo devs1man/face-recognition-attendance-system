@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { startSession, endSession } from "../api/attendanceApi";
+import Camera from "../components/attendance/Camera";
 
 function Attendance() {
   const [session, setSession] = useState(null);
@@ -43,6 +44,7 @@ function Attendance() {
 
               <p>Status : {session.status}</p>
             </div>
+            <Camera />
             <button
               onClick={handleEndSession}
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
