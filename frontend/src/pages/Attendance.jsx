@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { startSession, endSession } from "../api/attendanceApi";
+import { startSession, endSession, markAttendance } from "../api/attendanceApi";
 import Camera from "../components/attendance/Camera";
 import { recognizeFace } from "../api/recognitionApi";
 
 function Attendance() {
   const [session, setSession] = useState(null);
+  const markedStudents = useRef(new Set());
 
   const handleStartSession = async () => {
     try {
@@ -30,7 +31,24 @@ function Attendance() {
   const handleFrameCapture = async (blob) => {
     try {
       const result = await recognizeFace(blob);
-      console.log(result);
+      if (result.recognized_students.length === 0) {
+        return;
+      }
+
+      for (const student of result.recognized_students) {
+        console.log("Recognized: ", student);
+
+        if (markedStudents.current.has(student.student_id)) {
+          continue;
+        }
+        console.log("Marking attendance for:", student.student_id);
+        await markAttendance(
+          session.session_id,
+          student.student_id,
+          student.similarity,
+        );
+        markedStudents.current.add(student.student_id);
+      }
     } catch (err) {
       console.error(err);
     }
