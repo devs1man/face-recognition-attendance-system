@@ -1,7 +1,6 @@
 import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { startSession } from "mongoose";
-import { endSession } from "../api/attendanceApi";
+import { startSession, endSession } from "../api/attendanceApi";
 
 function Attendance() {
   const [session, setSession] = useState(null);
