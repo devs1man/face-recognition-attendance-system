@@ -2,6 +2,7 @@ import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { startSession, endSession } from "../api/attendanceApi";
 import Camera from "../components/attendance/Camera";
+import { recognizeFace } from "../api/recognitionApi";
 
 function Attendance() {
   const [session, setSession] = useState(null);
@@ -25,6 +26,15 @@ function Attendance() {
       alert("Failed to end session");
     }
   };
+
+  const handleFrameCapture = async (blob) => {
+    try {
+      const result = await recognizeFace(blob);
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <DashboardLayout>
       <h1 className="text-3xl font-bold mb-8">Attendance Session</h1>
@@ -44,7 +54,7 @@ function Attendance() {
 
               <p>Status : {session.status}</p>
             </div>
-            <Camera />
+            <Camera onFrameCapture={handleFrameCapture} />
             <button
               onClick={handleEndSession}
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
