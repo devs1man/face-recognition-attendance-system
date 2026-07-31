@@ -15,7 +15,7 @@ function App() {
       <Route path="/register-face" element={<RegisterFace />} />
       <Route path="/attendance" element={<Attendance />} />
       <Route path="/reports" element={<Reports />} />
-      <Route path="/attendance-history" element={AttendanceHistory} />
+      <Route path="/attendance-history" element={<AttendanceHistory />} />
     </Routes>
   );
 }
