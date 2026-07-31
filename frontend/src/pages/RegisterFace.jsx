@@ -6,9 +6,14 @@ function RegisterFace() {
   const location = useLocation();
   const navigate = useNavigate();
   const student = location.state?.student;
-  console.log(location.state);
-  console.log(student);
   const handleRegisterFace = async () => {
+    if (!student) {
+      return (
+        <DashboardLayout>
+          <h2 className="text-2xl font-bold">Please select a student first</h2>
+        </DashboardLayout>
+      );
+    }
     try {
       const response = await registerFace(student.id);
       alert(response.message || "Face registered successfully!");

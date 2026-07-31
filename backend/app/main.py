@@ -5,6 +5,7 @@ from app.routes.face import router as face_router
 from app.database.database import Base
 from app.routes.session import router as session_router
 from app.routes.attendance import router as attendance_router
+from app.routes import dashboard
 from app.routes.recognition import router as recognition_router
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -33,6 +34,7 @@ def root():
 app.include_router(router)
 app.include_router(student_router)
 app.include_router(face_router)
+app.include_router(dashboard.router)
 app.include_router(session_router)
 app.include_router(attendance_router)
 app.include_router(recognition_router)
