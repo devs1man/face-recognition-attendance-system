@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.schemas.attendance import AttendanceCreate
 from sqlalchemy.orm import Session
 from app.database.database import get_db
-from app.services.attendance_service import mark_attendance
+from app.services.attendance_service import (mark_attendance, get_history,)
 
 router = APIRouter(
     prefix="/attendance",
@@ -24,3 +24,8 @@ def mark_student_attendance(
         attendance.confidence,
         db,
     )
+@router.get("/history")
+def get_attendance_history(
+    db: Session = Depends(get_db),
+):
+    return get_history(db)
