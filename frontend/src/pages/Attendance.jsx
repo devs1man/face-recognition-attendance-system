@@ -7,6 +7,7 @@ import { recognizeFace } from "../api/recognitionApi";
 function Attendance() {
   const [session, setSession] = useState(null);
   const markedStudents = useRef(new Set());
+  const [presentStudents, setPresentStudents] = useState([]);
 
   const handleStartSession = async () => {
     try {
@@ -22,6 +23,8 @@ function Attendance() {
     try {
       await endSession(session.session_id);
       setSession(null);
+      markedStudents.current.clear();
+      setPresentStudents([]);
     } catch (error) {
       console.error(error);
       alert("Failed to end session");
@@ -48,6 +51,7 @@ function Attendance() {
           student.similarity,
         );
         markedStudents.current.add(student.student_id);
+        setPresentStudents((prev) => [...prev, student]);
       }
     } catch (err) {
       console.error(err);
@@ -72,7 +76,36 @@ function Attendance() {
 
               <p>Status : {session.status}</p>
             </div>
-            <Camera onFrameCapture={handleFrameCapture} />
+            <div className="grid grid-cols-2 gap-8">
+              <Camera onFrameCapture={handleFrameCapture}></Camera>
+              <div className="bg-gray-100 rounded-xl p-5">
+                <h2 className="text-xl font-bold mb-4">Present Students</h2>
+                {presentStudents.length === 0 ? (
+                  <p className="text-gray-500">No students recognized yet.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {presentStudents.map((student) => (
+                      <div
+                        key={student.student_id}
+                        className="bg-white rounded-lg shadow p-3 flex justify-between"
+                      >
+                        <div>
+                          <p className="font-semibold">
+                            {student.student_name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            ID: {student.student_id}
+                          </p>
+                        </div>
+                        <div className="text-green-600 font-bold">
+                          ✓ Present
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
             <button
               onClick={handleEndSession}
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
